@@ -3,7 +3,7 @@ export const mapCss = (data: any, debug?: boolean): object => {
   const sets = data.split('}');
 
   for (const set of sets) {
-    const pair = set.split(/:before\s*{/);
+    const pair = set.replace(/ /g, '').split(':before{');
     const keyGroups = pair[0];
     const keys = keyGroups.split(',');
     if (pair[1]) {
@@ -23,10 +23,7 @@ export const mapCss = (data: any, debug?: boolean): object => {
   return map;
 };
 
-export const cleanValue = (val: string): string | void => {
-  const matches = val.match(/content\s*:\s*"\\f([^"]+)"/i);
-  if (matches) {
-    return `\\uf${matches[1]}`;
-  }
-  return void 0;
+export const cleanValue = (val: string): string => {
+  let v = val.split('content:')[1].toLowerCase().replace(/\\e/, '\\ue').replace(/\\f/, '\\uf').trim().replace(/\"/g, '').replace(/;/g, '');
+  return v
 };
