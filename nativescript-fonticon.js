@@ -5,23 +5,39 @@ var lib = require("./lib");
 var TNSFontIcon = /** @class */ (function () {
     function TNSFontIcon() {
     }
-    TNSFontIcon.loadCss = function () {
+    TNSFontIcon.loadCss = function (css_json) {
         var cnt = 0;
         var currentName;
         var fontIconCollections = Object.keys(TNSFontIcon.paths);
         if (TNSFontIcon.debug) {
             console.log("Collections to load: " + fontIconCollections);
         }
+
         var initCollection = function () {
             currentName = fontIconCollections[cnt];
             TNSFontIcon.css[currentName] = {};
         };
+
+        if(css_json){
+
+            console.log("Fonticon: use fonts from json object")
+
+            initCollection()
+            var map = lib.mapCss2(css_json, TNSFontIcon.debug);
+            TNSFontIcon.css[currentName] = map;
+
+            return new Promise(function (resolve,reject){resolve()})
+        }
+
         var loadFile = function (path) {
             if (TNSFontIcon.debug) {
                 console.log('----------');
                 console.log("Loading collection '" + currentName + "' from file: " + path);
             }
             var cssFile = file_system_1.knownFolders.currentApp().getFile(path);
+
+            console.log("cssFile = " + file_system_1.File.exists(path))
+
             return new Promise(function (resolve, reject) {
                 cssFile.readText().then(function (data) {
                     var map = lib.mapCss(data, TNSFontIcon.debug);
@@ -60,10 +76,13 @@ function fonticon(value) {
     if (value) {
         if (value.indexOf('-') > -1) {
             var prefix = value.split('-')[0];
-            return TNSFontIcon.css[prefix][value];
+            var result = TNSFontIcon.css[prefix][value];            
+            //console.log("font result: " + value + ": " + result)
+            
+            return result
         }
         else {
-            console.log('Fonticon classname did not contain a prefix. i.e., \'fa-bluetooth\'');
+            console.log('Fonticon classname ['+value+'] did not contain a prefix. i.e., \'fa-bluetooth\'');
         }
     }
     return value;

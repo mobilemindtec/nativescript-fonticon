@@ -29,3 +29,27 @@ exports.cleanValue = function (val) {
     var v = val.split('content:')[1].toLowerCase().replace(/\\e/, '\\ue').replace(/\\f/, '\\uf').trim().replace(/\"/g, '').replace(/;/g, '');
     return v;
 };
+
+
+exports.mapCss2 = function (data, debug) {
+    var map = {};
+    
+    for (var key in data) {
+
+        var value = data[key]["content"]        
+        key = key.replace(new RegExp("_", 'g'), "-")
+        value = exports.cleanValue2(value);
+        var val = String.fromCharCode(parseInt(value.substring(2), 16));
+        map[key] = val
+
+        if (debug) {
+            console.log(key + ": " + val);
+        }
+    }
+
+    return map;
+};
+exports.cleanValue2 = function (val) {
+    var v = val.toLowerCase().replace(/\\e/, '\\ue').replace(/\\f/, '\\uf').trim().replace(/\"/g, '').replace(/;/g, '');
+    return v;
+};
