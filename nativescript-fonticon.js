@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var file_system_1 = require("tns-core-modules/file-system");
+var file_system_1 = require("@narivescript/core/file-system");
 var lib = require("./lib");
 var TNSFontIcon = /** @class */ (function () {
     function TNSFontIcon() {

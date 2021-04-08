@@ -1,4 +1,4 @@
-import {knownFolders} from 'tns-core-modules/file-system';
+import {knownFolders} from '@narivescript/core/file-system';
 import * as lib from './lib';
 
 export class TNSFontIcon {
